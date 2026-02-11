@@ -8,7 +8,7 @@ services:
     startCommand: agl store --host 0.0.0.0 --port $PORT
     envVars:
       - key: OPENAI_API_KEY
-        sync: false # You will manually enter this in the Render dashboard
+        sync: false # You will enter this manually in the Render dashboard
 
   # 2. The Dashboard (Node.js Frontend)
   - type: web
