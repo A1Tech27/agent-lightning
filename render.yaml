@@ -1,22 +1,10 @@
-services:
-  # 1. The Lightning Store (Python Backend)
-  - type: web
-    name: lightning-store
-    runtime: python
-    plan: free
-    buildCommand: pip install .
-    startCommand: agl store --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: OPENAI_API_KEY
-        sync: false # You will enter this manually in the Render dashboard
-
-  # 2. The Dashboard (Node.js Frontend)
+# 2. The Dashboard (Node.js Frontend)
   - type: web
     name: lightning-dashboard
-    runtime: static
+    runtime: static  # Use static for Vite/React apps
     rootDir: dashboard
     buildCommand: npm install && npm run build
-    staticPublishPath: ./dist
+    staticPublishPath: ./dist  # Change from publishPath to staticPublishPath
     envVars:
       - key: VITE_STORE_URL
         fromService:
