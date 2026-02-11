@@ -1,0 +1,26 @@
+services:
+  # 1. The Lightning Store (Python Backend)
+  - type: web
+    name: lightning-store
+    runtime: python
+    plan: free # or 'starter' if you want it to stay awake
+    buildCommand: pip install .
+    startCommand: agl store --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false # Set this in the Render Dashboard
+
+  # 2. The Dashboard (Node.js Frontend)
+  - type: web
+    name: lightning-dashboard
+    runtime: node
+    plan: static # Static sites are free and fast
+    rootDir: dashboard
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_STORE_URL
+        fromService:
+          type: web
+          name: lightning-store
+          property: host
