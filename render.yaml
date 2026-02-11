@@ -1,25 +1,21 @@
 services:
-  # 1. The Lightning Store (Python Backend)
+  # 1. The Backend
   - type: web
     name: lightning-store
     runtime: python
     plan: free
     buildCommand: pip install .
     startCommand: agl store --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: OPENAI_API_KEY
-        sync: false # You will enter your key in the Render dashboard
 
-  # 2. The Dashboard (Node.js Frontend)
+  # 2. The Dashboard
   - type: web
     name: lightning-dashboard
     runtime: static
     rootDir: dashboard
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
-    envVars:
-      - key: VITE_STORE_URL
-        fromService:
-          type: web
-          name: lightning-store
-          property: host
+    # This rule fixes the "Blank Page on Refresh" issue
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
