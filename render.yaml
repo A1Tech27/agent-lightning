@@ -3,21 +3,20 @@ services:
   - type: web
     name: lightning-store
     runtime: python
-    plan: free # or 'starter' if you want it to stay awake
+    plan: free
     buildCommand: pip install .
     startCommand: agl store --host 0.0.0.0 --port $PORT
     envVars:
       - key: OPENAI_API_KEY
-        sync: false # Set this in the Render Dashboard
+        sync: false # You will manually enter this in the Render dashboard
 
   # 2. The Dashboard (Node.js Frontend)
   - type: web
     name: lightning-dashboard
-    runtime: node
-    plan: static # Static sites are free and fast
+    runtime: static
     rootDir: dashboard
     buildCommand: npm install && npm run build
-    publishPath: dist
+    staticPublishPath: ./dist
     envVars:
       - key: VITE_STORE_URL
         fromService:
