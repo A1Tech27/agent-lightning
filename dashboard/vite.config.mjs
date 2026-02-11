@@ -3,16 +3,13 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  // Use relative paths so the site works on any URL/subfolder
   base: './', 
   build: {
-    // Change this back to 'dist' for a cleaner deployment
     outDir: 'dist',
-    // Ensures small assets are embedded to avoid 404s
-    assetsInlineLimit: 4096, 
     emptyOutDir: true,
+    // This helps Vite find the index.html if it's acting up
+    rollupOptions: {
+      input: './index.html',
+    },
   },
-  server: {
-    port: 3000,
-  }
 });
